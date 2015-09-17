@@ -2,12 +2,14 @@ GEM
   remote: https://rubygems.org/
   specs:
     byebug (6.0.2)
+    require_all (1.3.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   byebug
+  require_all
 
 BUNDLED WITH
    1.10.6
