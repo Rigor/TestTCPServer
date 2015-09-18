@@ -3,10 +3,12 @@ A webservice mocking HTTP requests.  TestTCPServer makes it easy to mock out spe
 
 # Running
 * `bundle install`
-* `ruby server.rb [-p port number]` # By default the service listens to port 80 
+* `ruby server.rb [-p port number]` # By default the service listens to port 80
 
 # Responses
 Responses are handled by Responders.  When a request is received, the router will try to determine the correct responder to handle the request.  For example, a request to '/foo' would look for a Foo class to handle the request.  If no class exists, the server will respond with a 404 HTTP response.
+
+There is no support for handling multiple clients at the same time.  This means that testing long running or non-terminating requests will be difficult.
 
 # Responders
 Any object that responds to :call and accepts two parameters can be a Responder. The two parameters are an open socket and a hash containing the environment that mostly conforms to the [Rack specification] (http://rack.rubyforge.org/doc/SPEC.html).  Additional elements are added to the hash; these non-conforming elements are prepended with an underscore, '_'.
