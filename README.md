@@ -2,8 +2,8 @@
 A webservice mocking HTTP requests.  TestTCPServer makes it easy to mock out specific requests at a lower level than most popular Ruby frameworks, including Rack (although inspiration is taken from Rack in some places).  This allows developers to mock out well-formed, malformed, or incomplete requests in order to test how systems handle these requests.
 
 # Running
-`bundle install`
-`ruby server.rb [-p port number]` # By default the service listens to port 80 
+* `bundle install`
+* `ruby server.rb [-p port number]` # By default the service listens to port 80 
 
 # Responses
 Responses are handled by Responders.  When a request is received, the router will try to determine the correct responder to handle the request.  For example, a request to '/foo' would look for a Foo class to handle the request.  If no class exists, the server will respond with a 404 HTTP response.
