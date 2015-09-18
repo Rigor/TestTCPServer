@@ -9,12 +9,13 @@ class EnvironmentReader
 
   def to_h
     {
-      'REQUEST_METHOD': request_method,
-      'SCRIPT NAME': '',
-      'PATH_INFO': '',
-      'QUERY_STRING': query_string,
-      'SERVER_NAME': server_name,
-      'SERVER_PORT': server_port
+      'REQUEST_METHOD' => request_method,
+      'SCRIPT NAME'    => '',
+      'PATH_INFO'      => '',
+      'QUERY_STRING'   => query_string,
+      'SERVER_NAME'    => server_name,
+      'SERVER_PORT'    => server_port,
+      '_REQUEST_URL'   => request_url
     }.merge(headers_hash)
   end
 
@@ -27,15 +28,15 @@ class EnvironmentReader
   end
 
   def request_line_parts
-    request_line.split("\s")
+    @request_line_parts ||= request_line.split("\s")
   end
 
   def request_method
-    request_line_parts[0]
+    request_line_parts[0].strip
   end
 
   def request_url
-    request_line_parts[1]
+    request_line_parts[1].strip
   end
 
   def query_string

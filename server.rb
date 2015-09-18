@@ -10,8 +10,7 @@ loop {                         # Servers run forever
     sleep 1 # Wait to receive all of the message
 
     env = EnvironmentReader.new(client.read(client.stat.size)).to_h
-    puts env.inspect
-    Aborted.call(client, env)
+    Router.new(client, env).route
   rescue Errno::ECONNRESET, Errno::EPIPE => e
     puts 'Connection reset or pipe closed'
     puts e.message
@@ -21,6 +20,6 @@ loop {                         # Servers run forever
     puts e.message
     puts e.backtrace
   ensure
-    client.close if client
+    client.close if client && !client.closed?
   end
 }
