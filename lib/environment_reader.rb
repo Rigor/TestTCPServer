@@ -3,8 +3,8 @@ require 'uri'
 class EnvironmentReader
   attr_reader :request
 
-  def initialize(request)
-    @request = request.to_s
+  def initialize(socket)
+    read(socket)
   end
 
   def to_h
@@ -19,13 +19,22 @@ class EnvironmentReader
     }.merge(headers_hash)
   end
 
-  def lines
-    @lines ||= request.split("\n").freeze
+  protected
+
+  attr_reader :request_line, :headers
+
+  def read(socket)
+    @request_line = socket.gets
+
+    @headers = []
+    while line = socket.gets.strip && line && !line.empty?
+      # TODO collect size of body from Content-Length header if it exists
+      @headers << line
+    end
+
+    # TODO read body if Content-Length is set
   end
 
-  def request_line
-    lines[0]
-  end
 
   def request_line_parts
     @request_line_parts ||= request_line.split("\s")
@@ -43,10 +52,6 @@ class EnvironmentReader
     URI(request_url).query
   end
 
-  def headers
-    @headers ||= lines.take_while{|line| line.strip.length > 0}.tap(&:shift)
-  end
-
   def headers_hash
     headers.each_with_object({}) do |header, hash|
       values = header.split(':')
@@ -61,6 +66,7 @@ class EnvironmentReader
   end
 
   def server_name
+    # TODO change this part
     'localhost'
   end
 

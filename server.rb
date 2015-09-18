@@ -9,7 +9,7 @@ loop {                         # Servers run forever
     # TODO remove this
     sleep 1 # Wait to receive all of the message
 
-    env = EnvironmentReader.new(client.read(client.stat.size)).to_h
+    env = EnvironmentReader.new(client).to_h
     puts "#{Time.now.ctime} Received request #{env['REQUEST_METHOD']} #{env['_REQUEST_URL']}"
     puts "#{Time.now.ctime} #{env.inspect}"
     Router.new(client, env).route
